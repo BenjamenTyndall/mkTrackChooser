@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<title>VS Race</title>
+  <meta name="viewport" content=
+    "width=device-width, initial-scale=1.0">
+        <link rel="icon" href="img/favicon.png" type="image/png">
+</head>
+<body class="body-bg">
+<nav class="navbar sticky-top navbar-expand-lg glassy-squared">
+  <div class="container-fluid">
+    <a class="navbar-brand mkfont text-white padding-L title main-heading">Track</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item bold">
+          <a class="nav-link active bold" aria-current="page" href="index.html">Home</a>
+        </li>
+        <li class="nav-item dropdown bold">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="gp.html">Grand Prix</a></li>
+            <li><a class="dropdown-item" href="ko.html">Knockout</a></li>
+            <li><a class="dropdown-item" href="vs.html">VS</a></li>
+            <li><a class="dropdown-item" href="characters.html">Characters</a></li>
+            <li><a class="dropdown-item" href="kart.html">Kart</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="body-bg super-padding">
+	<div>
+		<h1 class="mkfont padding-top centre main-heading">VS RACE</br>RANDOMISER</h1>
+	</div>	
+	<div class="super-padding">
+	<nav class="navbar navbar-expand-lg glassy">
+  		<div class="container-fluid">
+    <a class="navbar-brand">VS Race</a>
+
+  		</div>
+	</nav>
+
+</div>
+
+<div class="text-center my-4">
+  <button class="mkfont btn-lg glassy large-btn text-white btntext glow-button" id="rolling-btn" onclick="pickRandomTrack()">ROLL</button>
+  <h2 id="track-result" class="mt-3 title"></h2>
+</div>
+
+</div>
+
+<footer class="footer super-margin text-center text-white py-4">
+  <div class="container">
+    <p class="mb-1">MarioKart World Track Chooser</p>
+    <small>Not affiliated with Nintendo. This is just a little service to those wanting to spice up their MarioKart World gameplay. Feel free to add me on Discord @dr3kiki or instagram by the same name. ENJOY!</small>
+  </div>
+</footer>
+</body>
+<script>
+  const tracks = [
+    "Mario Bros. Circuit",
+    "Crown City",
+    "Whistlestop Summit",
+    "DK Spaceport",
+    "Desert Hills (Mario Kart DS)",
+    "Shy Guy Bazaar (Mario Kart 7)",
+    "Wario Stadium (Mario Kart 64)",
+    "Airship Fortress (Mario Kart DS)",
+    "DK Pass (Mario Kart DS)",
+    "Starview Peak",
+    "Sky-High Sundae (Mario Kart 8 Deluxe Booster Course Pass)",
+    "Wario Shipyard (Mario Kart 7)",
+    "Koopa Troopa Beach (Super Mario Kart)",
+    "Faraway Oasis",
+    "Crown City",
+    "Peach Stadium",
+    "Peach Beach (Mario Kart: Double Dash!!)",
+    "Salty Salty Speedway",
+    "Dino Dino Jungle (Mario Kart: Double Dash!!)",
+    "Great ? Block Ruins",
+    "Cheep Cheep Falls",
+    "Dandelion Depths",
+    "Boo Cinema",
+    "Dry Bones Burnout",
+    "Moo Moo Meadows (Mario Kart Wii)",
+    "Choco Mountain (Mario Kart 64)",
+    "Toad's Factory (Mario Kart Wii)",
+    "Bowser's Castle",
+    "Acorn Heights",
+    "Mario Circuit",
+    "Rainbow Road"
+  ];
+
+  let isRolling = false;
+  let rollingInterval = null;
+
+  function pickRandomTrack() {
+    const resultEl = document.getElementById("track-result");
+    const selectbtn = document.getElementById("rolling-btn");
+    if (isRolling) {
+      // Stop rolling early
+      clearInterval(rollingInterval);
+      isRolling = false;
+      selectbtn.innerText = "RE-ROLL";
+      const finalIndex = Math.floor(Math.random() * tracks.length);
+      resultEl.innerText = tracks[finalIndex];
+      resultEl.classList.remove("rolling");
+      return;
+    }
+
+    isRolling = true;
+    resultEl.classList.add("rolling");
+    selectbtn.innerText = "ROLLING";
+
+    let rollCount = 0;
+    const rollDuration = 3000; // total rolling time
+    const rollSpeed = 75; // speed of shuffle
+
+    rollingInterval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * tracks.length);
+      resultEl.innerText = tracks[randomIndex];
+      rollCount += rollSpeed;
+
+      if (rollCount >= rollDuration) {
+        clearInterval(rollingInterval);
+        isRolling = false;
+            selectbtn.innerText = "RE-ROLL";
+        const finalIndex = Math.floor(Math.random() * tracks.length);
+        resultEl.innerText = tracks[finalIndex];
+        resultEl.classList.remove("rolling");
+      }
+    }, rollSpeed);
+  }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</html>

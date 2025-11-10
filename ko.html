@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Knockout</title>
+  <link rel="icon" href="img/favicon.png" type="image/png">
+</head>
+<body class="body-bg">
+
+<nav class="navbar sticky-top navbar-expand-lg glassy-squared">
+  <div class="container-fluid">
+    <a class="navbar-brand mkfont text-white padding-L title" href="#">KNOCKOUT</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item bold"><a class="nav-link active bold" href="index.html">Home</a></li>
+        <li class="nav-item dropdown bold">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            Categories
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="gp.html">Grand Prix</a></li>
+            <li><a class="dropdown-item" href="ko.html">Knockout</a></li>
+            <li><a class="dropdown-item" href="vs.html">VS</a></li>
+            <li><a class="dropdown-item" href="characters.html">Characters</a></li>
+            <li><a class="dropdown-item" href="kart.html">Kart</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="body-bg super-padding">
+  <div>
+    <h1 class="mkfont padding-top centre main-heading">KNOCKOUT<br>RANDOMISER</h1>
+  </div>  
+
+  <div class="d-flex justify-content-center align-items-center flex-column min-vh-500">
+    <button class="mkfont btn-lg glassy large-btn text-white btntext glow-button" id="rolling-btn" onclick="pickRandomTrack()">ROLL</button>
+    <h2 id="cup-result" class="mt-3 title"></h2>
+    <img id="track-image" src="" alt="Cup Image" style="max-width: 300px; margin-top: 1rem; display: none;">
+  </div>
+</div>
+
+<br class="padding-L padding-top">
+
+<footer class="footer super-margin text-center text-white py-4">
+  <div class="container">
+    <p class="mb-1">MarioKart World Track Chooser</p>
+    <small>Not affiliated with Nintendo. This is just a little service to those wanting to spice up their MarioKart World gameplay. Feel free to add me on Discord @dr3kiki or Instagram by the same name. ENJOY!</small>
+  </div>
+</footer>
+
+<script>
+  const cup = [
+    "Golden Rally",
+    "Ice Rally",
+    "Moon Rally",
+    "Spiny (Blue Shell) Rally",
+    "Cherry Rally",
+    "Acorn Rally",
+    "Cloud Rally",
+    "Heart Rally"
+  ];
+
+  function getImagePath(name) {
+    return "img/" + name.toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/-+$/, "") + ".png";
+  }
+
+  let isRolling = false;
+  let rollingInterval = null;
+
+  function pickRandomTrack() {
+    const resultEl = document.getElementById("cup-result");
+    const imageEl = document.getElementById("track-image");
+    const selectbtn = document.getElementById("rolling-btn");
+
+    if (isRolling) {
+      clearInterval(rollingInterval);
+      isRolling = false;
+      selectbtn.innerText = "RE-ROLL";
+      const finalIndex = Math.floor(Math.random() * cup.length);
+      const finalTrack = cup[finalIndex];
+      resultEl.innerText = finalTrack;
+      imageEl.src = getImagePath(finalTrack);
+      imageEl.style.display = "block";
+      resultEl.classList.remove("rolling");
+      return;
+    }
+
+    isRolling = true;
+    resultEl.classList.add("rolling");
+    selectbtn.innerText = "ROLLING";
+
+    let rollCount = 0;
+    const rollDuration = 3000;
+    const rollSpeed = 75;
+
+    rollingInterval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * cup.length);
+      resultEl.innerText = cup[randomIndex];
+      imageEl.style.display = "none";
+      rollCount += rollSpeed;
+
+      if (rollCount >= rollDuration) {
+        clearInterval(rollingInterval);
+        isRolling = false;
+        selectbtn.innerText = "RE-ROLL";
+        const finalIndex = Math.floor(Math.random() * cup.length);
+        const finalTrack = cup[finalIndex];
+        resultEl.innerText = finalTrack;
+        imageEl.src = getImagePath(finalTrack);
+        imageEl.style.display = "block";
+        resultEl.classList.remove("rolling");
+      }
+    }, rollSpeed);
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
